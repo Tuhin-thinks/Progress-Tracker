@@ -42,11 +42,12 @@ class Database:
         }
         """
         self.tables = tables
+        self._create_tables()
 
     def _create_tables(self):
         for table in self.tables:
             cols_query = ",".join([(k+" "+v) for k, v in table["columns"].items()])
-            query = f"""CREATE TABLE {table["name"]} IF NOT EXISTS(
+            query = f"""CREATE TABLE IF NOT EXISTS {table["name"]}(
                 {cols_query}
             );"""
             execute_command(query)
@@ -63,4 +64,37 @@ class Database:
         for row in data:
             print(row)
 
-#TODO CREATE THE SCHEMA FOR ALL THE TABLES
+def create_new_tables():
+    db_schema = [
+        {
+            "name": 'ui_data',
+            "columns": {
+                "id": "integer primary key autoincrement",
+                "field_name": "text",
+                "value": "text"
+            }
+        }, 
+        {
+            "name": "path_management",
+            "columns": {
+                "id": "integer primary key autoincrement",
+                "field": "text",
+                "value": "text"
+            }
+        },
+        {
+            "name": "subject_records",
+            "columns": {
+                "id": "integer primary key autoincrement",
+                "sub_name": "text",
+                "hours_studied": "text",
+                "days_spent": "integer"
+            }
+        }
+    ]
+    db = Database(db_schema)
+    db.get_ui_data()
+
+
+if __name__ == "__main__":
+    create_new_tables()
