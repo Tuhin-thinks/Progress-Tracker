@@ -11,6 +11,10 @@ class HomeWindow(QMainWindow):
         self.ui = ui_home.Ui_MainWindow()
         self.ui.setupUi(self)
 
+        # TODO connect signals and slots
+
+        # TODO fetch ui_data from database
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     w = HomeWindow()
