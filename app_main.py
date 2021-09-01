@@ -13,7 +13,7 @@ class HomeWindow(QMainWindow):
 
         # TODO connect signals and slots
 
-        # TODO fetch ui_data from database
+        # TODO fetch ui_data from database (call schema using get_ui_data())
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
