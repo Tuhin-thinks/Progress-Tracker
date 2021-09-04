@@ -77,7 +77,46 @@ class Database:
             """
             data_dict[row[1]] = row[2]
         return data_dict
+    
+    def get_subject_names(self):
+        """
+        To get only subject names from subject_records database
+        """
+        query = """SELECT sub_name FROM subject_records"""
+        data = execute_fetch(query)
+        subjects = []
+        for name in data:
+            subjects.append(name[0])
+        return subjects
+    
+    def get_subject_data(self, sub_name:str, fields: Union[str, List]):
+        """
+        To a mentioned column data in subject_records db
+        """
+        field_query = "?"
+        if type(fields) == list:
+            field_query = ",".join(["?"]*len(fields))
+        query = f"""SELECT ? from subject_records where sub_name=?"""
+        args = (field_query, sub_name)
 
+        return execute_fetch(query, args)
+
+    def update_subject_study_hours(self, subject_name:str, hours=None, days=None):
+        if not any((hours, days)):
+            raise ValueError("hours and days both cannot be empty")
+        
+        # TODO: check if the subject actually exists and get it's hours and days data
+        
+        # TODO: add hours and days data with the current data and udate in the table
+
+        query = f"""UPDATE subject_records
+                        SET hours_studied=?,
+                        SET days_spent=?
+                    WHERE
+                        subject_name=?"""
+        args = (hours, days, subject_name)
+
+        # TODO: execute the update command
 
 def create_new_tables():
     db_schema = [
@@ -126,8 +165,30 @@ def add_ui_data():
     for record in records:
         db.add_record("ui_data", ['field_name', 'value'], record_tuple=record)
 
+def add_subjects():
+    db = Database(empty_schema.db_schema)
+    subjects = empty_schema.subjects
+    for subject in subjects:
+        db.add_record('subject_records', ['sub_name', 'hours_studied'], record_tuple=(subject, '0.0'))
+
+def get_subject_names():
+    db = Database(empty_schema.db_schema)
+    subjects = db.get_subject_names()
+    return subjects
 
 if __name__ == "__main__":
+    # ---------- create new database with basic/empty schema --------
     # create_new_tables()
     # add_ui_data()
-    get_ui_data()
+
+    # ---------- get UI label related data ----------
+    # data = get_ui_data()
+    # print(data)
+
+    # --------- add subjects -----------
+    # add_subjects()
+
+    # --------- get subject names -------
+    data = get_subject_names()
+    print(data)
+    print(f"Total {len(data)} subjects")
