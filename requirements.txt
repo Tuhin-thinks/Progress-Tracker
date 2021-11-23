@@ -1,2 +1,2 @@
-PySide6
 pyqtgraph
+PySide2~=5.15.2

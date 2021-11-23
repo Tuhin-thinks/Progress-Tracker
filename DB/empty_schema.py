@@ -23,6 +23,16 @@ db_schema = [
                 "hours_studied": "text",
                 "days_spent": "integer"
         }
+    },
+    # TODO: implement subject log table
+    {
+        "name": "subject_log",
+        "columns": {
+            "id": "integer primary key autoincrement",
+            "sub_id": "integer",
+            "day_num": "integer",
+            "hours_studied": "text"
+        }
     }
 ]
 

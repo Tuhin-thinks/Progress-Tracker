@@ -1,13 +1,17 @@
+import datetime
 import os
-from typing import List, Union, Dict
-
 import sqlite3
+from typing import List, Dict, Sequence, Tuple, TypeVar
 
-import empty_schema
-# from . import empty_schema
+try:
+    import empty_schema
+except ImportError:
+    from . import empty_schema
 
 BASE = os.path.dirname(__file__)
 DEFAULT_DB_PATH = os.path.join(BASE, "data_sqlite3.db")
+
+F_ = TypeVar('F_', Tuple[str, str], type(None))
 
 
 def create_connection(db_file_path):
@@ -18,7 +22,7 @@ def create_connection(db_file_path):
 def execute_command(query, *args):
     conn = create_connection(DEFAULT_DB_PATH)
     cursor = conn.cursor()
-    cursor.execute(query, *args)
+    cursor.execute(query, args)
     conn.commit()
     conn.close()
 
@@ -33,7 +37,7 @@ def execute_fetch(query, *args):
 
 
 class Database:
-    def __init__(self, tables: Dict):
+    def __init__(self, tables: List[Dict]):
         """
         tables[table]
         table = Dict
@@ -52,24 +56,26 @@ class Database:
 
     def _create_tables(self):
         for table in self.tables:
-            cols_query = ",".join([(k+" "+v)
-                                  for k, v in table["columns"].items()])
+            cols_query = ",".join([(k + " " + v)
+                                   for k, v in table["columns"].items()])
             query = f"""CREATE TABLE IF NOT EXISTS {table["name"]}(
                 {cols_query}
             );"""
             execute_command(query)
 
-    def add_record(self, table, column_names, record_tuple):
+    @staticmethod
+    def add_record(table, column_names, record_tuple):
         columns = ",".join(column_names)
-        values = ",".join(["?"]*len(column_names))
+        values = ",".join(["?"] * len(column_names))
         query = f"""INSERT INTO {table}({columns}) VALUES({values})"""
         execute_command(query, record_tuple)
 
-    def get_ui_data(self):
+    @staticmethod
+    def get_ui_data():
         query = f"""SELECT * FROM ui_data"""
-        data = execute_fetch(query)
+        ui_data = execute_fetch(query)
         data_dict = {}
-        for row in data:
+        for row in ui_data:
             """
             row[0] => id
             row[1] => field_name
@@ -77,8 +83,9 @@ class Database:
             """
             data_dict[row[1]] = row[2]
         return data_dict
-    
-    def get_subject_names(self):
+
+    @staticmethod
+    def get_subject_names():
         """
         To get only subject names from subject_records database
         """
@@ -88,35 +95,70 @@ class Database:
         for name in data:
             subjects.append(name[0])
         return subjects
-    
-    def get_subject_data(self, sub_name:str, fields: Union[str, List]):
+
+    @staticmethod
+    def get_subject_data(sub_name: str, fields: Sequence[str]):
         """
         To a mentioned column data in subject_records db
         """
-        field_query = "?"
-        if type(fields) == list:
-            field_query = ",".join(["?"]*len(fields))
-        query = f"""SELECT ? from subject_records where sub_name=?"""
-        args = (field_query, sub_name)
+        field_query = ""
+        if type(fields) == tuple or type(fields) == list:
+            field_query = ", ".join(fields)
+        query = f"""SELECT {field_query} FROM subject_records WHERE sub_name=?;"""
+        args = (sub_name,)
+        print("args:", args, "\nquery:", query)
+        return execute_fetch(query, *args)
 
-        return execute_fetch(query, args)
+    def update_passed_days(self):
+        ui_data = self.get_ui_data()
+        start_date = ui_data['start_date']
+        days_passed = datetime.datetime.today() - (datetime.datetime.today()
+                                                   if start_date is None
+                                                   else datetime.datetime.strptime(start_date,
+                                                                                   "%d-%m-%Y")) + datetime.timedelta(
+            days=1)
+        query = """UPDATE ui_data 
+        SET value=?
+        WHERE field_name=?;"""
+        execute_command(query, str(days_passed.days), 'days_passed')
+        if start_date is None:
+            execute_command(query, "21-11-2021", 'start_date')
+        print("days passed :", days_passed.days, " updated")
 
-    def update_subject_study_hours(self, subject_name:str, hours=None, days=None):
-        if not any((hours, days)):
+    @staticmethod
+    def update_subject_study_hours(subject_name: str, hours=None, days=None):
+        if not any((hours is None, days is None)):
             raise ValueError("hours and days both cannot be empty")
-        
-        # TODO: check if the subject actually exists and get it's hours and days data
-        
-        # TODO: add hours and days data with the current data and udate in the table
 
-        query = f"""UPDATE subject_records
-                        SET hours_studied=?,
-                        SET days_spent=?
-                    WHERE
-                        subject_name=?"""
-        args = (hours, days, subject_name)
+        # check if the subject actually exists and get it's hours and days data
+        query = f"""
+        SELECT hours_studied, days_spent
+            FROM subject_records
+            WHERE sub_name=?;
+        """
+        hours_studied_rows = execute_fetch(query, subject_name)  # get query rows, if subject exists
+        if hours_studied_rows:
+            db_hours, db_days = hours_studied_rows[0]
+        else:
+            raise ValueError(f"{subject_name} doesn't exist in the database.")
 
-        # TODO: execute the update command
+        # add hours and days data with the current data and update in the table
+        if hours:
+            db_hours = float(db_hours) + float(hours)
+        if days:
+            db_days = int(db_days) + days
+
+        query = f"""
+        UPDATE subject_records 
+            SET hours_studied=?, days_spent=?
+        WHERE
+            sub_name=?;
+        """
+
+        # execute the update command
+        execute_command(query, str(db_hours), str(db_days) if db_days else None, subject_name)
+        print("updated successfully")
+
 
 def create_new_tables():
     db_schema = [
@@ -157,6 +199,7 @@ def get_ui_data():
     db = Database(empty_schema.db_schema)
     return db.get_ui_data()
 
+
 def add_ui_data():
     db = Database(empty_schema.db_schema)
     records = [("question 1", "Select Subjects"),
@@ -165,16 +208,42 @@ def add_ui_data():
     for record in records:
         db.add_record("ui_data", ['field_name', 'value'], record_tuple=record)
 
+
 def add_subjects():
     db = Database(empty_schema.db_schema)
     subjects = empty_schema.subjects
     for subject in subjects:
         db.add_record('subject_records', ['sub_name', 'hours_studied'], record_tuple=(subject, '0.0'))
 
+
 def get_subject_names():
     db = Database(empty_schema.db_schema)
     subjects = db.get_subject_names()
     return subjects
+
+
+def update_subject_data(s_name: str, hrs_add=None, days_spent=None):
+    db = Database(empty_schema.db_schema)
+    subjects = db.update_subject_study_hours(s_name, hrs_add, days_spent)
+    return subjects
+
+
+def update_days_passed():
+    db = Database(empty_schema.db_schema)
+    db.update_passed_days()
+
+
+def get_subject_data(sub_name: str) -> F_:
+    db = Database(empty_schema.db_schema)
+    data = db.get_subject_data(sub_name, fields=('hours_studied', 'days_spent'))
+    if data:
+        print("data:", data)
+        fetched_row = data[0]
+        hours_, days_ = fetched_row[0], fetched_row[1]
+        return hours_, days_
+    else:
+        return None
+
 
 if __name__ == "__main__":
     # ---------- create new database with basic/empty schema --------
@@ -189,6 +258,13 @@ if __name__ == "__main__":
     # add_subjects()
 
     # --------- get subject names -------
-    data = get_subject_names()
-    print(data)
-    print(f"Total {len(data)} subjects")
+    # data = get_subject_names()
+    # print(data)
+    # print(f"Total {len(data)} subjects")
+
+    # --------- update subject data --------
+    # data = update_subject_data('p & ds', 0.0)
+    # print(update_days_passed())
+
+    # -------- get subject data ------------
+    print(get_subject_data('CNW'))

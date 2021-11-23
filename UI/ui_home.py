@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'homezCEjfk.ui'
+## Form generated from reading UI file 'home.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(800, 600)
+        MainWindow.resize(838, 541)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout_2 = QGridLayout(self.centralwidget)
@@ -28,6 +28,95 @@ class Ui_MainWindow(object):
         self.page_1.setObjectName(u"page_1")
         self.gridLayout_4 = QGridLayout(self.page_1)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
+        self.frame_8 = QFrame(self.page_1)
+        self.frame_8.setObjectName(u"frame_8")
+        self.frame_8.setFrameShape(QFrame.StyledPanel)
+        self.frame_8.setFrameShadow(QFrame.Raised)
+        self.gridLayout_13 = QGridLayout(self.frame_8)
+        self.gridLayout_13.setObjectName(u"gridLayout_13")
+        self.gridLayout_13.setVerticalSpacing(15)
+        self.choice_hours = QComboBox(self.frame_8)
+        self.choice_hours.setObjectName(u"choice_hours")
+
+        self.gridLayout_13.addWidget(self.choice_hours, 3, 1, 1, 1)
+
+        self.label_q2 = QLabel(self.frame_8)
+        self.label_q2.setObjectName(u"label_q2")
+        self.label_q2.setAlignment(Qt.AlignCenter)
+
+        self.gridLayout_13.addWidget(self.label_q2, 3, 0, 1, 1)
+
+        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
+
+        self.gridLayout_13.addItem(self.horizontalSpacer_5, 1, 0, 1, 1)
+
+        self.choice_subjects = QComboBox(self.frame_8)
+        self.choice_subjects.setObjectName(u"choice_subjects")
+
+        self.gridLayout_13.addWidget(self.choice_subjects, 2, 1, 1, 1)
+
+        self.label_home_page_header = QLabel(self.frame_8)
+        self.label_home_page_header.setObjectName(u"label_home_page_header")
+        self.label_home_page_header.setStyleSheet(u"QLabel{\n"
+"	border: 2px solid black;\n"
+"	border-radius: 2px 5px;\n"
+"	padding-top: 2px;\n"
+"	padding-bottom: 2px;\n"
+"}")
+        self.label_home_page_header.setAlignment(Qt.AlignCenter)
+
+        self.gridLayout_13.addWidget(self.label_home_page_header, 1, 1, 1, 1)
+
+        self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
+
+        self.gridLayout_13.addItem(self.horizontalSpacer_6, 1, 2, 1, 1)
+
+        self.pushButton_toggle_mode = QPushButton(self.frame_8)
+        self.pushButton_toggle_mode.setObjectName(u"pushButton_toggle_mode")
+        self.pushButton_toggle_mode.setMaximumSize(QSize(80, 16777215))
+        self.pushButton_toggle_mode.setStyleSheet(u"#pushButton_toggle_mode{\n"
+"	color: gray;\n"
+"}\n"
+"#pushButton_toggle_mode::hover{\n"
+"	color: rgb(85, 87, 83);\n"
+"}")
+
+        self.gridLayout_13.addWidget(self.pushButton_toggle_mode, 2, 2, 1, 1)
+
+        self.label_q1 = QLabel(self.frame_8)
+        self.label_q1.setObjectName(u"label_q1")
+        self.label_q1.setAlignment(Qt.AlignCenter)
+
+        self.gridLayout_13.addWidget(self.label_q1, 2, 0, 1, 1)
+
+        self.frame_9 = QFrame(self.frame_8)
+        self.frame_9.setObjectName(u"frame_9")
+        self.frame_9.setFrameShape(QFrame.StyledPanel)
+        self.frame_9.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout = QHBoxLayout(self.frame_9)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalSpacer_7 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout.addItem(self.horizontalSpacer_7)
+
+        self.pushButton_update = QPushButton(self.frame_9)
+        self.pushButton_update.setObjectName(u"pushButton_update")
+        self.pushButton_update.setMaximumSize(QSize(80, 16777215))
+        self.pushButton_update.setStyleSheet(u"#pushButton_toggle_mode{\n"
+"	color: gray;\n"
+"}\n"
+"#pushButton_toggle_mode::hover{\n"
+"	color: rgb(85, 87, 83);\n"
+"}")
+
+        self.horizontalLayout.addWidget(self.pushButton_update)
+
+
+        self.gridLayout_13.addWidget(self.frame_9, 4, 0, 1, 3)
+
+
+        self.gridLayout_4.addWidget(self.frame_8, 0, 0, 1, 1, Qt.AlignTop)
+
         self.graph_outer_frame = QFrame(self.page_1)
         self.graph_outer_frame.setObjectName(u"graph_outer_frame")
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
@@ -54,70 +143,6 @@ class Ui_MainWindow(object):
 
 
         self.gridLayout_4.addWidget(self.graph_outer_frame, 1, 0, 1, 1)
-
-        self.frame_8 = QFrame(self.page_1)
-        self.frame_8.setObjectName(u"frame_8")
-        self.frame_8.setFrameShape(QFrame.StyledPanel)
-        self.frame_8.setFrameShadow(QFrame.Raised)
-        self.gridLayout_13 = QGridLayout(self.frame_8)
-        self.gridLayout_13.setObjectName(u"gridLayout_13")
-        self.gridLayout_13.setVerticalSpacing(15)
-        self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
-
-        self.gridLayout_13.addItem(self.horizontalSpacer_6, 1, 2, 1, 1)
-
-        self.label_home_page_header = QLabel(self.frame_8)
-        self.label_home_page_header.setObjectName(u"label_home_page_header")
-        self.label_home_page_header.setStyleSheet(u"QLabel{\n"
-"	border: 2px solid black;\n"
-"	border-radius: 2px 5px;\n"
-"	padding-top: 2px;\n"
-"	padding-bottom: 2px;\n"
-"}")
-        self.label_home_page_header.setAlignment(Qt.AlignCenter)
-
-        self.gridLayout_13.addWidget(self.label_home_page_header, 1, 1, 1, 1)
-
-        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
-
-        self.gridLayout_13.addItem(self.horizontalSpacer_5, 1, 0, 1, 1)
-
-        self.pushButton_toggle_mode = QPushButton(self.frame_8)
-        self.pushButton_toggle_mode.setObjectName(u"pushButton_toggle_mode")
-        self.pushButton_toggle_mode.setMaximumSize(QSize(80, 16777215))
-        self.pushButton_toggle_mode.setStyleSheet(u"#pushButton_toggle_mode{\n"
-"	color: gray;\n"
-"}\n"
-"#pushButton_toggle_mode::hover{\n"
-"	color: rgb(85, 87, 83);\n"
-"}")
-
-        self.gridLayout_13.addWidget(self.pushButton_toggle_mode, 2, 2, 1, 1)
-
-        self.label_q1 = QLabel(self.frame_8)
-        self.label_q1.setObjectName(u"label_q1")
-        self.label_q1.setAlignment(Qt.AlignCenter)
-
-        self.gridLayout_13.addWidget(self.label_q1, 2, 0, 1, 1)
-
-        self.choice_subjects = QComboBox(self.frame_8)
-        self.choice_subjects.setObjectName(u"choice_subjects")
-
-        self.gridLayout_13.addWidget(self.choice_subjects, 2, 1, 1, 1)
-
-        self.label_q2 = QLabel(self.frame_8)
-        self.label_q2.setObjectName(u"label_q2")
-        self.label_q2.setAlignment(Qt.AlignCenter)
-
-        self.gridLayout_13.addWidget(self.label_q2, 3, 0, 1, 1)
-
-        self.choice_hours = QComboBox(self.frame_8)
-        self.choice_hours.setObjectName(u"choice_hours")
-
-        self.gridLayout_13.addWidget(self.choice_hours, 3, 1, 1, 1)
-
-
-        self.gridLayout_4.addWidget(self.frame_8, 0, 0, 1, 1, Qt.AlignTop)
 
         self.stackedWidget.addWidget(self.page_1)
         self.page_2 = QWidget()
@@ -325,7 +350,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 800, 21))
+        self.menubar.setGeometry(QRect(0, 0, 838, 20))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -341,11 +366,15 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Progress Tracker", None))
-        self.label_inne_frame_header.setText(QCoreApplication.translate("MainWindow", u"Progress", None))
+        self.label_q2.setText(QCoreApplication.translate("MainWindow", u"question 2", None))
         self.label_home_page_header.setText(QCoreApplication.translate("MainWindow", u"Daily Update", None))
         self.pushButton_toggle_mode.setText(QCoreApplication.translate("MainWindow", u"hrs/days", None))
         self.label_q1.setText(QCoreApplication.translate("MainWindow", u"question 1", None))
-        self.label_q2.setText(QCoreApplication.translate("MainWindow", u"question 2", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_update.setToolTip(QCoreApplication.translate("MainWindow", u"update data to database", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_update.setText(QCoreApplication.translate("MainWindow", u"update", None))
+        self.label_inne_frame_header.setText(QCoreApplication.translate("MainWindow", u"Progress", None))
         self.pushButton_clear_records.setText(QCoreApplication.translate("MainWindow", u"clear records", None))
         self.pushButton_export_records.setText(QCoreApplication.translate("MainWindow", u"Export", None))
         self.pushButton_add_new_db.setText(QCoreApplication.translate("MainWindow", u"Add New DB File", None))
